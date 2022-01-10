@@ -40,3 +40,12 @@ exports.list = (req, res) => {
       res.json(posts);
     });
 };
+
+exports.read = (req, res) => {
+  const {slug} = req.params
+  Post.findOne({slug})
+    .exec((err, posts) => {
+      if (err) console.log(err);
+      res.json(posts);
+    });
+};
