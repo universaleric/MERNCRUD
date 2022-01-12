@@ -43,6 +43,8 @@ const Create = () => {
       <br />
       <h1>CREATE POST</h1>
       <br />
+      <div className="row">
+      <div className="col-md-5">
       <form onSubmit={handleSubmit}>
         <div className="form-group pb-2">
           <label className="text-muted">Title</label>
@@ -61,6 +63,7 @@ const Create = () => {
             onChange={handleChange("content")}
             value={content}
             type="text"
+            rows="5"
             className="form-control"
             placeholder="Write something..."
             required
@@ -78,9 +81,11 @@ const Create = () => {
           />
         </div>
         <div>
-          <button className="btn btn-primary pb-2">Create</button>
+          <button className="btn btn-success pb-2">Create</button>
         </div>
       </form>
+      </div>
+      </div>
     </div>
   );
 };
