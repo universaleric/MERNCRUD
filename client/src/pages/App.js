@@ -54,7 +54,7 @@ const App = () => {
                 <Link to={`/post/${post.slug}`}>
                   <h2>{post.title}</h2>
                 </Link>
-                <p className="lead">{post.content.substring(0, 100)}</p>
+                <div className="lead">{post.content.substring(0, 100)}</div>
                 <p>
                   Author <span className="text-muted">{post.user}</span>{" "}
                   Published on{" "}
