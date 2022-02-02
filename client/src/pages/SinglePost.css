@@ -1,0 +1,31 @@
+.center {
+    text-align: center;
+}
+
+.ql-align-center {
+    text-align: center;
+}
+
+.ql-align-right {
+    text-align: right;
+}
+
+.ql-align-justify {
+    text-align: justify;
+}
+
+.ql-indent-1 {
+    text-indent: 25px;
+}
+
+.ql-indent-2 {
+    text-indent: 50px;
+}
+
+.ql-indent-3 {
+    text-indent: 75px;
+}
+
+.ql-indent-4 {
+    text-indent: 100px;
+}

@@ -1,29 +1,27 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Nav from "../components/Nav";
-import ReactQuill from "react-quill";
-import ReactHtmlParser, {
-  processNodes,
-  convertNodeToElement,
-  htmlparser2
-} from "html-react-parser";
 import { getUser } from "../helpers";
-import "react-quill/dist/quill.bubble.css";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; 
 
 const Create = () => {
   //state
   const [state, setState] = useState({
     title: "",
+    content: "",
     user: getUser(),
   });
 
   const [content, setContent] = useState("");
 
+
   //rich text editor handle change
 
-  const handleContent = (event) => {
-    setContent(event);
-  };
+  const handleContent = event => {
+        // console.log(event);
+        setContent(event);
+    };
 
   //destructure values from state
   const { title, user } = state;
@@ -62,7 +60,7 @@ const Create = () => {
       <h1>CREATE POST</h1>
       <br />
       <div className="row">
-        <div className="col-md-5">
+        <div className="col-md-6">
           <form onSubmit={handleSubmit}>
             <div className="form-group pb-2">
               <label className="text-muted">Title</label>
@@ -77,17 +75,41 @@ const Create = () => {
             </div>
             <div className="form-group pb-2">
               <label className="text-muted">Content</label>
-              <ReactQuill
-                onChange={handleContent}
-                value={content}
-                theme="snow"
-                rows="5"
-                className="pb-5 mb-3"
-                placeholder="Write something..."
-                style={{ border: "1px solid #666" }}
-                required
-              />
-              {ReactHtmlParser(content)}
+              <ReactQuill 
+              value={content}
+              onChange={handleContent}
+              placeholder="Write something..."
+              modules= {{toolbar: [
+                [{ 'header': [1, 2, 3, false] }],
+                ["bold", "italic", "underline", "strike"],
+                [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }],
+                [
+                  { list: "ordered" },
+                  { list: "bullet" },
+                  { indent: "-1" },
+                  { indent: "+1" }
+                ],
+                ["link"]
+              ]}}
+              formats={[
+                'header',
+                'font',
+                'size',
+                'bold',
+                'italic',
+                'underline',
+                'strike',
+                'blockquote',
+                'list',
+                'bullet',
+                'indent',
+                'link',
+                'image',
+                'color',
+                'align'
+              ]}
+              theme="snow"
+              required/>
             </div>
             <div className="form-group pb-2">
               <label className="text-muted">User</label>
@@ -106,6 +128,7 @@ const Create = () => {
           </form>
         </div>
       </div>
+      
     </div>
   );
 };

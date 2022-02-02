@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Nav from "../components/Nav";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; 
 
 const UpdatePost = (props) => {
   const [state, setState] = useState({
@@ -10,7 +12,8 @@ const UpdatePost = (props) => {
     user: "",
   });
 
-  const { title, content, slug, user } = state;
+  const { title, slug, user } = state;
+  const [content, setContent] = useState("");
 
   useEffect(() => {
     axios
@@ -24,7 +27,7 @@ const UpdatePost = (props) => {
 
   const showUpdateForm = () => (
     <div className="row">
-      <div className="col-md-5">
+      <div className="col-md-6">
     <form onSubmit={handleSubmit}>
       <div className="form-group pb-2">
         <label className="text-muted">Title</label>
@@ -39,15 +42,38 @@ const UpdatePost = (props) => {
       </div>
       <div className="form-group pb-2">
         <label className="text-muted">Content</label>
-        <textarea
-          onChange={handleChange("content")}
-          value={content}
-          type="text"
-          rows="5"
-          className="form-control"
-          placeholder="Write something..."
-          required
-        />
+        <ReactQuill 
+              value={content}
+              onChange={handleContent}
+              placeholder="Write something..."
+              modules= {{toolbar: [
+                ["bold", "italic", "underline"],
+                [
+                  { list: "ordered" },
+                  { list: "bullet" },
+                  { indent: "-1" },
+                  { indent: "+1" }
+                ]
+              ]}}
+              formats={[
+                'header',
+                'font',
+                'size',
+                'bold',
+                'italic',
+                'underline',
+                'strike',
+                'blockquote',
+                'list',
+                'bullet',
+                'indent',
+                'link',
+                'image',
+                'color',
+              ]}
+              theme="snow"
+              required/>
+        
       </div>
       <div className="form-group pb-2">
         <label className="text-muted">User</label>
@@ -67,6 +93,11 @@ const UpdatePost = (props) => {
     </div>
     </div>
   );
+
+  const handleContent = event => {
+    console.log(event);
+    setContent(event);
+};
 
   function handleChange(name) {
     return function (event) {
