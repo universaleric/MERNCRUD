@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Nav from "../components/Nav";
-import { getUser } from "../helpers";
+import { getUser, getToken } from "../helpers";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; 
+import "react-quill/dist/quill.snow.css";
 
 const Create = () => {
   //state
@@ -15,13 +15,12 @@ const Create = () => {
 
   const [content, setContent] = useState("");
 
-
   //rich text editor handle change
 
-  const handleContent = event => {
-        // console.log(event);
-        setContent(event);
-    };
+  const handleContent = (event) => {
+    // console.log(event);
+    setContent(event);
+  };
 
   //destructure values from state
   const { title, user } = state;
@@ -39,7 +38,15 @@ const Create = () => {
     event.preventDefault();
     // console.table({ title, content, user });
     axios
-      .post(`${process.env.REACT_APP_API}/post`, { title, content, user })
+      .post(
+        `${process.env.REACT_APP_API}/post`,
+        { title, content, user },
+        {
+          headers: {
+            authorization: `Bearer ${getToken()}`,
+          },
+        }
+      )
       .then((response) => {
         //empty state
         setState({ ...state, title: "", user: "" });
@@ -75,39 +82,40 @@ const Create = () => {
             </div>
             <div className="form-group pb-2">
               <label className="text-muted">Content</label>
-              <ReactQuill 
-              value={content}
-              onChange={handleContent}
-              placeholder="Write something..."
-              modules= {{toolbar: [
-                [{ 'header': [1, 2, 3, false] }],
-                [{ 'font': [] }],
-                ["bold", "italic", "underline", "strike"],
-                [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-                [
-                  { 'align': [] }
-                ],
-                ["link"]
-              ]}}
-              formats={[
-                'header',
-                'font',
-                'size',
-                'bold',
-                'italic',
-                'underline',
-                'strike',
-                'blockquote',
-                'list',
-                'bullet',
-                'indent',
-                'link',
-                'image',
-                'color',
-                'align'
-              ]}
-              theme="snow"
-              required/>
+              <ReactQuill
+                value={content}
+                onChange={handleContent}
+                placeholder="Write something..."
+                modules={{
+                  toolbar: [
+                    [{ header: [1, 2, 3, false] }],
+                    [{ font: [] }],
+                    ["bold", "italic", "underline", "strike"],
+                    [{ color: [] }], // dropdown with defaults from theme
+                    [{ align: [] }],
+                    ["link"],
+                  ],
+                }}
+                formats={[
+                  "header",
+                  "font",
+                  "size",
+                  "bold",
+                  "italic",
+                  "underline",
+                  "strike",
+                  "blockquote",
+                  "list",
+                  "bullet",
+                  "indent",
+                  "link",
+                  "image",
+                  "color",
+                  "align",
+                ]}
+                theme="snow"
+                required
+              />
             </div>
             <div className="form-group pb-2">
               <label className="text-muted">User</label>
@@ -126,7 +134,6 @@ const Create = () => {
           </form>
         </div>
       </div>
-      
     </div>
   );
 };

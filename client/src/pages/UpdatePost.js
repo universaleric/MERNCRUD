@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Nav from "../components/Nav";
+import { getToken } from "../helpers";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; 
+import "react-quill/dist/quill.snow.css";
 
 const UpdatePost = (props) => {
   const [state, setState] = useState({
@@ -28,78 +29,77 @@ const UpdatePost = (props) => {
   const showUpdateForm = () => (
     <div className="row">
       <div className="col-md-6">
-    <form onSubmit={handleSubmit}>
-      <div className="form-group pb-2">
-        <label className="text-muted">Title</label>
-        <input
-          onChange={handleChange("title")}
-          value={title}
-          type="text"
-          className="form-control"
-          placeholder="Post Title"
-          required
-        />
-      </div>
-      <div className="form-group pb-2">
-        <label className="text-muted">Content</label>
-        <ReactQuill 
+        <form onSubmit={handleSubmit}>
+          <div className="form-group pb-2">
+            <label className="text-muted">Title</label>
+            <input
+              onChange={handleChange("title")}
+              value={title}
+              type="text"
+              className="form-control"
+              placeholder="Post Title"
+              required
+            />
+          </div>
+          <div className="form-group pb-2">
+            <label className="text-muted">Content</label>
+            <ReactQuill
               value={content}
               onChange={handleContent}
               placeholder="Write something..."
-              modules= {{toolbar: [
-                [{ 'header': [1, 2, 3, false] }],
-                [{ 'font': [] }],
-                ["bold", "italic", "underline", "strike"],
-                [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-                [
-                  { 'align': [] }
+              modules={{
+                toolbar: [
+                  [{ header: [1, 2, 3, false] }],
+                  [{ font: [] }],
+                  ["bold", "italic", "underline", "strike"],
+                  [{ color: [] }, { align: [] }], // dropdown with defaults from theme
+                  ["link"],
                 ],
-                ["link"]
-              ]}}
+              }}
               formats={[
-                'header',
-                'font',
-                'size',
-                'bold',
-                'italic',
-                'underline',
-                'strike',
-                'blockquote',
-                'list',
-                'bullet',
-                'indent',
-                'link',
-                'image',
-                'color',
-                'align'
+                "header",
+                "font",
+                "size",
+                "bold",
+                "italic",
+                "underline",
+                "strike",
+                "blockquote",
+                "list",
+                "bullet",
+                "indent",
+                "link",
+                "image",
+                "color",
+                "align",
               ]}
               theme="snow"
-              required/>
-        
+              required
+            />
+          </div>
+          <div className="form-group pb-2">
+            <label className="text-muted">User</label>
+            <input
+              onChange={handleChange("user")}
+              value={user}
+              type="text"
+              className="form-control"
+              placeholder="Your name"
+              required
+            />
+          </div>
+          <div>
+            <button className="btn btn-success pb-2">Update</button>
+          </div>
+        </form>
       </div>
-      <div className="form-group pb-2">
-        <label className="text-muted">User</label>
-        <input
-          onChange={handleChange("user")}
-          value={user}
-          type="text"
-          className="form-control"
-          placeholder="Your name"
-          required
-        />
-      </div>
-      <div>
-        <button className="btn btn-success pb-2">Update</button>
-      </div>
-    </form>
-    </div>
     </div>
   );
 
-  const handleContent = event => {
+  const handleContent = (event) => {
     console.log(event);
     setContent(event);
-};
+  };
 
   function handleChange(name) {
     return function (event) {
@@ -112,10 +112,18 @@ const UpdatePost = (props) => {
     event.preventDefault();
     // console.table({ title, content, user });
     axios
-      .put(`${process.env.REACT_APP_API}/post/${slug}`, { title, content, user })
+      .put(
+        `${process.env.REACT_APP_API}/post/${slug}`,
+        { title, content, user },
+        {
+          headers: {
+            authorization: `Bearer ${getToken()}`,
+          },
+        }
+      )
       .then((response) => {
-          console.log(response);
-          const {title, content, slug, user} = response.data
+        console.log(response);
+        const { title, content, slug, user } = response.data;
         //empty state
         setState({ ...state, title, content, slug, user });
         //show success alert
