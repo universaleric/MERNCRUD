@@ -7,7 +7,6 @@ import "react-quill/dist/quill.snow.css";
 const UpdatePost = (props) => {
   const [state, setState] = useState({
     title: "",
-    content: "",
     slug: "",
     user: "",
   });
@@ -20,7 +19,8 @@ const UpdatePost = (props) => {
       .get(`${process.env.REACT_APP_API}/post/${props.match.params.slug}`)
       .then((response) => {
         const { title, content, slug, user } = response.data;
-        setState({ ...state, title, content, slug, user });
+        setState({ ...state, title, slug, user });
+        setContent(content);
       })
       .catch((error) => alert("Error loading single post"));
   }, []);
@@ -47,13 +47,14 @@ const UpdatePost = (props) => {
               onChange={handleContent}
               placeholder="Write something..."
               modules= {{toolbar: [
-                ["bold", "italic", "underline"],
+                [{ 'header': [1, 2, 3, false] }],
+                [{ 'font': [] }],
+                ["bold", "italic", "underline", "strike"],
+                [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
                 [
-                  { list: "ordered" },
-                  { list: "bullet" },
-                  { indent: "-1" },
-                  { indent: "+1" }
-                ]
+                  { 'align': [] }
+                ],
+                ["link"]
               ]}}
               formats={[
                 'header',
@@ -70,6 +71,7 @@ const UpdatePost = (props) => {
                 'link',
                 'image',
                 'color',
+                'align'
               ]}
               theme="snow"
               required/>

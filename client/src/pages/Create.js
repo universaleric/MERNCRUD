@@ -81,13 +81,11 @@ const Create = () => {
               placeholder="Write something..."
               modules= {{toolbar: [
                 [{ 'header': [1, 2, 3, false] }],
+                [{ 'font': [] }],
                 ["bold", "italic", "underline", "strike"],
-                [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }],
+                [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
                 [
-                  { list: "ordered" },
-                  { list: "bullet" },
-                  { indent: "-1" },
-                  { indent: "+1" }
+                  { 'align': [] }
                 ],
                 ["link"]
               ]}}
